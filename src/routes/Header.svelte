@@ -14,7 +14,7 @@
 		<User let:user>
 			<Collection ref={getUserRecord(user.email)} let:data>
 				{#each data as record}
-					Hi {record.name}, roll number: {record.rollno}.
+					Hi {user.displayName}, roll number: {record.rollno}.
 				{/each}
 			</Collection>
 			<button on:click={() => signOut(auth)}>Sign Out</button>
