@@ -1,22 +1,15 @@
 <script lang="ts">
 	import { signOut, signInWithRedirect } from "firebase/auth";
-	import { Collection, FirebaseApp, User } from "sveltefire";
+	import { Doc, FirebaseApp, User } from "sveltefire";
 	import { auth, firestore, provider } from "$lib/firebase"
-    import { collection, query, where } from "firebase/firestore";
-
-	$: getUserRecord = (email: string | null) => {
-		return query(collection(firestore, "users"), where('email', '==', email));
-	}
 </script>
 
 <FirebaseApp {auth} {firestore}>
 	<header>
 		<User let:user>
-			<Collection ref={getUserRecord(user.email)} let:data>
-				{#each data as record}
-					Hi, roll number: {record.rollno}.
-				{/each}
-			</Collection>
+			<Doc ref="/users/{user.uid}" let:data>
+				Hi, {data.name}. Your roll number is {data.rollno}.
+			</Doc>
 			Test
 			<button on:click={() => signOut(auth)}>Sign Out</button>
 		
