@@ -11,9 +11,9 @@ import { auth } from "firebase-admin";
 import { initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 
-import { logger } from "firebase-functions/v2";
+import { logger, setGlobalOptions } from "firebase-functions/v2";
 import { HttpsError, beforeUserCreated } from "firebase-functions/v2/identity";
-import { user } from "firebase-functions/v1/auth"
+import { region } from "firebase-functions/v1"
 
 import { google } from "googleapis"
 
@@ -24,6 +24,10 @@ import { google } from "googleapis"
 //   logger.info("Hello logs!", {structuredData: true});
 //   response.send("Hello from Firebase!");
 // });
+
+const REGION = "asia-east1";
+
+setGlobalOptions({ region: REGION });
 
 initializeApp();
 const firestore = getFirestore();
@@ -115,7 +119,7 @@ export const whitelistCheck = beforeUserCreated(async (event) => {
     }
 });
 
-export const addUser = user().onCreate(async (user) => {
+export const addUser = region(REGION).auth.user().onCreate(async (user) => {
     const { data } = await getData(user?.email);
     if (data) {
       const { rollno, phone } = data
