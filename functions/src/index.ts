@@ -122,12 +122,12 @@ export const whitelistCheck = beforeUserCreated(async (event) => {
 export const addUser = region(REGION).auth.user().onCreate(async (user) => {
     const { data } = await getData(user?.email);
     if (data) {
-      const { rollno, phone } = data
+      const { rollno, name, phone } = data
       auth().updateUser(user.uid, {
         phoneNumber: phone || null
       })
-      await firestore.collection("/users").add({
-        id: user.uid,
+      await firestore.collection("/users").doc(user.uid).set({
+        name,
         rollno
       })
     }

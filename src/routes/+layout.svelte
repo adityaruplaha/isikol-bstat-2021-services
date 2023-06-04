@@ -1,5 +1,20 @@
 <script lang="ts">
-    import Header from "./Header.svelte";
+	import { onMount } from "svelte";
+	import {
+		initializeAppCheck,
+		ReCaptchaEnterpriseProvider,
+	} from "firebase/app-check";
+	import { app } from "$lib/firebase";
+	import Header from "./Header.svelte";
+
+	onMount(() => {
+		initializeAppCheck(app, {
+			provider: new ReCaptchaEnterpriseProvider(
+				"6LcKJEQmAAAAABtUr8IiRDHSIUACHY0napjqh9ed"
+			),
+			isTokenAutoRefreshEnabled: true,
+		});
+	});
 </script>
 
 <div class="app">
@@ -10,7 +25,9 @@
 	</main>
 
 	<footer>
-		<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
+		<p>
+			visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit
+		</p>
 	</footer>
 </div>
 
