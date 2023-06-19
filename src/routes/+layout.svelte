@@ -1,10 +1,14 @@
 <script lang="ts">
+	import "../app.css";
+
 	import { onMount } from "svelte";
 	import {
 		initializeAppCheck,
 		ReCaptchaEnterpriseProvider,
 	} from "firebase/app-check";
-	import { app } from "$lib/firebase";
+	import { FirebaseApp } from "sveltefire";
+
+	import { app, auth, firestore } from "$lib/firebase";
 	import Header from "./Header.svelte";
 
 	onMount(() => {
@@ -17,53 +21,12 @@
 	});
 </script>
 
-<div class="app">
-	<Header />
+<FirebaseApp {auth} {firestore}>
+	<div class="flex flex-col min-h-screen">
+		<Header />
 
-	<main>
-		<slot />
-	</main>
-
-	<footer>
-		<p>
-			visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit
-		</p>
-	</footer>
-</div>
-
-<style>
-	.app {
-		display: flex;
-		flex-direction: column;
-		min-height: 100vh;
-	}
-
-	main {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		padding: 1rem;
-		width: 100%;
-		max-width: 64rem;
-		margin: 0 auto;
-		box-sizing: border-box;
-	}
-
-	footer {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		padding: 12px;
-	}
-
-	footer a {
-		font-weight: bold;
-	}
-
-	@media (min-width: 480px) {
-		footer {
-			padding: 12px 0;
-		}
-	}
-</style>
+		<main class="m-0 flex flex-col flex-1 bg-slate-700 text-gray-100 min-h-full">
+			<slot />
+		</main>
+	</div>
+</FirebaseApp>
